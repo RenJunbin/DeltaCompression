@@ -1,0 +1,59 @@
+gpt2_stat:
+model_size: 237.350 MB
+model_compression_ratio: 31.39 % in bits
+saved_space: 74.513 MB in bits
+model_compression_ratio: 30.88 % aligned by pagesize
+saved_space: 73.293 MB aligned by pagesize
+model_average_access: 783510.38 pages
+model_max_access: 1306705.92 pages
+frac: stats in bits, PageSize: 32768
+transformer.wte.weight	frac:0.862 PageSize, bits=28231
+transformer.wpe.weight	frac:0.668 PageSize, bits=21873
+transformer.h.0.attn.c_attn.weight	frac:0.692 PageSize, bits=22665
+transformer.h.0.attn.c_proj.weight	frac:0.675 PageSize, bits=22126
+transformer.h.0.mlp.c_fc.weight	frac:0.629 PageSize, bits=20608
+transformer.h.0.mlp.c_proj.weight	frac:0.579 PageSize, bits=18958
+transformer.h.1.attn.c_attn.weight	frac:0.699 PageSize, bits=22896
+transformer.h.1.attn.c_proj.weight	frac:0.678 PageSize, bits=22225
+transformer.h.1.mlp.c_fc.weight	frac:0.649 PageSize, bits=21279
+transformer.h.1.mlp.c_proj.weight	frac:0.674 PageSize, bits=22071
+transformer.h.2.attn.c_attn.weight	frac:0.703 PageSize, bits=23028
+transformer.h.2.attn.c_proj.weight	frac:0.707 PageSize, bits=23160
+transformer.h.2.mlp.c_fc.weight	frac:0.684 PageSize, bits=22401
+transformer.h.2.mlp.c_proj.weight	frac:0.621 PageSize, bits=20333
+transformer.h.3.attn.c_attn.weight	frac:0.522 PageSize, bits=17110
+transformer.h.3.attn.c_proj.weight	frac:0.722 PageSize, bits=23644
+transformer.h.3.mlp.c_fc.weight	frac:0.600 PageSize, bits=19651
+transformer.h.3.mlp.c_proj.weight	frac:0.500 PageSize, bits=16395
+transformer.h.4.attn.c_attn.weight	frac:0.510 PageSize, bits=16725
+transformer.h.4.attn.c_proj.weight	frac:0.737 PageSize, bits=24161
+transformer.h.4.mlp.c_fc.weight	frac:0.541 PageSize, bits=17726
+transformer.h.4.mlp.c_proj.weight	frac:0.714 PageSize, bits=23391
+transformer.h.5.attn.c_attn.weight	frac:0.506 PageSize, bits=16593
+transformer.h.5.attn.c_proj.weight	frac:0.527 PageSize, bits=17253
+transformer.h.5.mlp.c_fc.weight	frac:0.675 PageSize, bits=22115
+transformer.h.5.mlp.c_proj.weight	frac:0.516 PageSize, bits=16912
+transformer.h.6.attn.c_attn.weight	frac:0.656 PageSize, bits=21499
+transformer.h.6.attn.c_proj.weight	frac:0.593 PageSize, bits=19442
+transformer.h.6.mlp.c_fc.weight	frac:0.682 PageSize, bits=22346
+transformer.h.6.mlp.c_proj.weight	frac:0.555 PageSize, bits=18177
+transformer.h.7.attn.c_attn.weight	frac:0.504 PageSize, bits=16505
+transformer.h.7.attn.c_proj.weight	frac:0.597 PageSize, bits=19552
+transformer.h.7.mlp.c_fc.weight	frac:0.686 PageSize, bits=22467
+transformer.h.7.mlp.c_proj.weight	frac:0.607 PageSize, bits=19882
+transformer.h.8.attn.c_attn.weight	frac:0.740 PageSize, bits=24238
+transformer.h.8.attn.c_proj.weight	frac:0.629 PageSize, bits=20597
+transformer.h.8.mlp.c_fc.weight	frac:0.686 PageSize, bits=22489
+transformer.h.8.mlp.c_proj.weight	frac:0.648 PageSize, bits=21246
+transformer.h.9.attn.c_attn.weight	frac:0.739 PageSize, bits=24227
+transformer.h.9.attn.c_proj.weight	frac:0.663 PageSize, bits=21730
+transformer.h.9.mlp.c_fc.weight	frac:0.694 PageSize, bits=22742
+transformer.h.9.mlp.c_proj.weight	frac:0.696 PageSize, bits=22808
+transformer.h.10.attn.c_attn.weight	frac:0.515 PageSize, bits=16890
+transformer.h.10.attn.c_proj.weight	frac:0.574 PageSize, bits=18815
+transformer.h.10.mlp.c_fc.weight	frac:0.687 PageSize, bits=22511
+transformer.h.10.mlp.c_proj.weight	frac:0.536 PageSize, bits=17561
+transformer.h.11.attn.c_attn.weight	frac:0.764 PageSize, bits=25019
+transformer.h.11.attn.c_proj.weight	frac:0.662 PageSize, bits=21697
+transformer.h.11.mlp.c_fc.weight	frac:0.680 PageSize, bits=22269
+transformer.h.11.mlp.c_proj.weight	frac:0.523 PageSize, bits=17154
