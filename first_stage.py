@@ -84,7 +84,7 @@ def main(model, nbits, outfile):
     storage_space = 0
     for name, param in model.named_parameters():
         storage_space += param.numel() * FP16
-    print(f"model_size: {(storage_space / 8) / 2**20:.3f} MB", file=outfile)
+    print(f"model_size,{(storage_space / 8) / 2**20:.3f} MB", file=outfile)
     model_exponent = get_exponent(model, nbits)
     tensor_gran_pattern = defaultdict(dict)
     for k, tensor in model_exponent.items():
@@ -152,8 +152,8 @@ def main(model, nbits, outfile):
     for k, v in model_exponent.items():
         # storage_space_bits += v.numel() * FP16
         compressed_storage_space_bits += road_map_bits[k]['max_ratio'][-1][-1]
-    print(f"model_compression_ratio: {(storage_space - compressed_storage_space_bits) / storage_space * 100:.2f} % in bits", file=outfile)
-    print(f"saved_space: {(storage_space - compressed_storage_space_bits) / (2**20 * 8):.3f} MB in bits", file=outfile)
+    print(f"model_compression_ratio_in_bits,{(storage_space - compressed_storage_space_bits) / storage_space * 100:.2f} %", file=outfile)
+    print(f"saved_space_in_bits,{(storage_space - compressed_storage_space_bits) / (2**20 * 8):.3f} MB", file=outfile)
 
     ### parser the list tensor_gran_pattern in page
     bits = [5, 4, 3, 2]
@@ -176,13 +176,14 @@ def main(model, nbits, outfile):
                 stats = sorted(candidate[bit].items(), key=lambda x: x[1], reverse=True)
                 total_page = {}
                 cnt_stat = 0
+                frac_bits = {}
                 for pat, cnt in stats:
                     after_compressed_bit = cnt * (FP16 - bit) + bit
                     pattern_page = (after_compressed_bit + PageSize - 1) // PageSize
                     cnt_stat += cnt
+                    frac_bits[f"0b{pat:0{bit}b}"] = pattern_page * PageSize - after_compressed_bit
                     if pattern_page == 1:
-                        frac_bits = PageSize - (cnt * (FP16 - bit) + bit)
-                        if frac_bits > after_compressed_bit:
+                        if frac_bits[f"0b{pat:0{bit}b}"] > after_compressed_bit:
                             break
                     elif pattern_page > 0:
                         total_page[pat] = pattern_page
@@ -212,8 +213,8 @@ def main(model, nbits, outfile):
     for k, v in model_exponent.items():
         # storage_space += (v.numel() * FP16 + PageSize) // PageSize
         compressed_storage_space += road_map[k]['max_ratio'][0][-1]
-    print(f"model_compression_ratio: {(storage_space_page_aligned - compressed_storage_space) / storage_space_page_aligned * 100:.2f} % aligned by pagesize", file=outfile)
-    print(f"saved_space: {(storage_space_page_aligned - compressed_storage_space) * PageSize/(2**20 * 8):.3f} MB aligned by pagesize", file=outfile)
+    print(f"model_compression_ratio_aligned_by_pagesize,{(storage_space_page_aligned - compressed_storage_space) / storage_space_page_aligned * 100:.2f} %", file=outfile)
+    print(f"saved_space_aligned_by_pagesize,{(storage_space_page_aligned - compressed_storage_space) * PageSize/(2**20 * 8):.3f} MB", file=outfile)
 
     # how many pages will be read in average
     average_access = 0
@@ -232,7 +233,7 @@ def main(model, nbits, outfile):
             # avg_count *= tensor.shape[1]
             
         average_access += avg_count
-    print(f"model_average_access: {average_access/len(road_map):.2f} pages", file=outfile)
+    print(f"model_average_access,{average_access/len(road_map):.2f} pages", file=outfile)
 
     # how many pages will be read in maxmium
     max_access = 0
@@ -243,15 +244,18 @@ def main(model, nbits, outfile):
         elif len(road_map[name]['max_ratio']) == 4:
             max_count += sum(road_map[name][max_bits].values()) + 1
         max_access += (max_count * tensor.shape[1])
-    print(f"model_max_access: {max_access/len(road_map):.2f} pages", file=outfile)
+    print(f"model_max_access,{max_access/len(road_map):.2f} pages", file=outfile)
 
     # whole model compression_ratio in tensor granularity
     # page
-    print(f"frac: stats in bits, PageSize: {PageSize}", file=outfile)
-    for name, tensor in model_exponent.items():
-        print(
-            f"{name}\tfrac:{road_map[name]['max_ratio'][-1][-1] / PageSize:.3f} PageSize, bits={road_map[name]['max_ratio'][-1][-1]}", file=outfile
-        )
+    print(f"frac_in_bits, PageSize: {PageSize}", file=outfile)
+    '''
+    Actually, I want to use a dataframe structure to hold the fraction stats information.
+    '''
+    # for name, tensor in model_exponent.items():
+    #     print(
+    #         f"{name},frac_in_pagesize,{road_map[name]['max_ratio'][-1][-1] / PageSize:.3f},bits,{road_map[name]['max_ratio'][-1][-1]}", file=outfile
+    #     )
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -262,12 +266,12 @@ if __name__ == "__main__":
     print(args)
     if args.outfile != sys.stdout:
         with open(args.outfile, 'w+') as outfile:
-            print(f"{args.model}_stat:", file=outfile, flush=True)   
+            print(f"{args.model}_stat,", file=outfile, flush=True)   
             model = models_hub[args.model]['hdlr'](models_hub[args.model]['path'])
             main(model, args.nbits, outfile)
-        print("Completed!")
+        print("Completed!", file=sys.stdout)
     else:
         model = models_hub[args.model]['hdlr'](models_hub[args.model]['path'])
-        main(model_exponent, args.nbits, args.outfile)
-        print("Completed!")
+        main(model, args.nbits, args.outfile)
+        print("Completed!", file=sys.stdout)
 
